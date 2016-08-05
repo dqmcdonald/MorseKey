@@ -20,7 +20,7 @@ SerialLCD::SerialLCD( )
 
 }
 
-void SerialLCD::displayScreen(char *theText){
+void SerialLCD::displayScreen(const char *theText){
   int delayTime = 50;
   ss.write(0xFE);   // command flag
   delay(delayTime);
@@ -49,7 +49,7 @@ void SerialLCD::displayScreen(char *theText){
 // *theText is a string of text and it gets padded at the end with spaces
 // to overwrite whatever is already showing on that line. If you send more than
 // 16 characters, it truncates the text.
-void SerialLCD::displayLine(int lineNum, char *theText){
+void SerialLCD::displayLine(int lineNum, const char *theText){
   int delayTime = 50;
   int lcdPosition = 0;  // initialize lcdPosition and use to indicate value values
 
@@ -91,7 +91,7 @@ void SerialLCD::displayLine(int lineNum, char *theText){
 // LCD line: integer 1 through 2
 // position on line: integer 1 through 16
 // character to display: a single character in single quotes
-void SerialLCD::displayChar(int lineNum, int charNum, char theChar){
+void SerialLCD::displayChar(int lineNum, int charNum, const char theChar){
   int delayTime = 50;
   int lcdPosition = 0;  // initialize lcdPosition and use to indicate value values
 
