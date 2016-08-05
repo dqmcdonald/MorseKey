@@ -45,9 +45,68 @@
 #define E_CODE ((DOT<<0 ))
 #define E_LEN 1
 
-#define  O_CODE  ((DASH<<0) | (DASH << 1 ) | (DASH<<2))
-#define O_LEN 3
+#define F_CODE ((DOT<<0 ) | (DOT << 1 ) | (DASH << 2) | (DOT << 3 ) )
+#define F_LEN 4
 
+#define G_CODE ((DASH<<0 ) | (DASH << 1 ) | (DOT << 2) )
+#define G_LEN 3
+
+#define H_CODE ((DOT<<0 ) | (DOT << 1 ) | (DOT << 2) | (DOT << 3 ) )
+#define H_LEN 4
+
+#define  I_CODE  ((DOT<<0 ) | (DOT << 1 ) )
+#define  I_LEN 2
+
+#define J_CODE ((DOT<<0 ) | (DASH << 1 ) | (DASH << 2) | (DASH << 3 ) )
+#define J_LEN 4
+
+#define K_CODE ((DASH<<0 ) | (DOT << 1 ) | (DASH << 2) )
+#define K_LEN 3
+
+#define L_CODE ((DOT<<0 ) | (DASH << 1 ) | (DOT << 2) | (DOT << 3 ) )
+#define L_LEN 4
+
+#define M_CODE ((DASH<<0 ) | (DASH << 1 ))
+#define M_LEN 2
+
+#define N_CODE ((DASH<<0 ) | (DOT << 1 ))
+#define N_LEN 2
+
+#define  O_CODE  ((DASH<<0) | (DASH << 1 ) | (DASH<<2))
+#define  O_LEN 3
+
+#define P_CODE ((DOT<<0 ) | (DASH << 1 ) | (DASH << 2) | (DOT << 3 ) )
+#define P_LEN 4
+
+#define Q_CODE ((DASH<<0 ) | (DASH << 1 ) | (DOT << 2) | (DASH << 3 ) )
+#define Q_LEN 4
+
+#define  R_CODE  ((DOT<<0) | (DASH << 1 ) | (DOT<<2))
+#define  R_LEN 3
+
+#define  S_CODE  ((DOT<<0) | (DOT << 1 ) | (DOT<<2))
+#define  S_LEN 3
+
+#define T_CODE ((DASH<<0 ))
+#define T_LEN 1
+
+#define  U_CODE  ((DOT<<0) | (DOT << 1 ) | (DASH<<2))
+#define  U_LEN 3
+
+#define  V_CODE  ((DOT<<0 ) | (DOT << 1 ) | (DOT << 2) | (DASH << 3 ) )
+#define  V_LEN 4
+
+#define  W_CODE  ((DOT<<0 ) | (DASH << 1 ) | (DASH << 2) )
+#define  W_LEN 3
+
+#define X_CODE ((DASH<<0 ) | (DOT << 1 ) | (DOT << 2) | (DASH << 3 ) )
+#define X_LEN 4
+
+#define Y_CODE ((DASH<<0 ) | (DOT << 1 ) | (DASH << 2) | (DASH << 3 ) )
+#define Y_LEN 4
+
+#define Z_CODE ((DASH<<0 ) | (DASH << 1 ) | (DOT << 2) | (DOT << 3 ) )
+#define Z_LEN 4
 
 
 
@@ -86,9 +145,22 @@ int pulse_bits = 0;
 Bounce key_bouncer = Bounce();
 Bounce reset_bouncer = Bounce();
 
-int pulse_codes[] = { A_CODE, B_CODE, C_CODE, D_CODE, E_CODE };
-int pulse_lens[] = { A_LEN, B_LEN, C_LEN, D_LEN, E_LEN };
+const int pulse_codes[] = { A_CODE, B_CODE, C_CODE, D_CODE, E_CODE,
+                      F_CODE, G_CODE, H_CODE, I_CODE, J_CODE,
+                      K_CODE, L_CODE, M_CODE, N_CODE, O_CODE,
+                      P_CODE, Q_CODE, R_CODE, S_CODE, T_CODE,
+                      U_CODE, V_CODE, W_CODE, X_CODE, Y_CODE,
+                      Z_CODE };
+const int pulse_lengths[] = {  A_LEN, B_LEN, C_LEN, D_LEN, E_LEN,
+                      F_LEN, G_LEN, H_LEN, I_LEN, J_LEN,
+                      K_LEN, L_LEN, M_LEN, N_LEN, O_LEN,
+                      P_LEN, Q_LEN, R_LEN, S_LEN, T_LEN,
+                      U_LEN, V_LEN, W_LEN, X_LEN, Y_LEN,
+                      Z_LEN };
+                      
+const int NUM_CODES = sizeof(pulse_codes) / sizeof(int);
 
+ 
 //*******************************************************
 // Functions:
 //*******************************************************
@@ -136,7 +208,7 @@ void setup( ) {
   pinMode(KEY_IN_PIN, INPUT );
   digitalWrite( KEY_IN_PIN, HIGH );
   key_bouncer.attach( KEY_IN_PIN );
-  key_bouncer.interval(15);
+  key_bouncer.interval(10);
 
   pinMode(BUZZER_PIN, OUTPUT );
 
@@ -320,7 +392,7 @@ void addDotDash( const char& dotdash )
 
   num_pulses++;
 
-  
+
 }
 
 /* ******************************************************/
@@ -339,14 +411,18 @@ void addCharacter( const char& c )
 }
 
 /* ******************************************************/
+/* This function checks the current pulse pattern against the array of known codes. If
+ *  the bit pattern and the number of pulses matches a known code then return the 
+ *  corresponding character. Otherwise return ' ' 
+ */
 char getCharacterFromPulses()
 {
   char ret_char = ' ';
 
-  int num_codes = sizeof(pulse_codes) / sizeof(int);
-  for ( auto i = 0; i < num_codes; i++ ) {
+ 
+  for ( auto i = 0; i < NUM_CODES; i++ ) {
 
-    if ( pulse_bits == pulse_codes[i] && num_pulses == pulse_lens[i] ) {
+    if ( pulse_bits == pulse_codes[i] && num_pulses == pulse_lengths[i] ) {
       ret_char = 'A' + i;
       break;
     }
